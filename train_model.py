@@ -21,11 +21,41 @@ df["C_pct"] = (
     df["C (Min)"] + df["C (Max)"]
 ) / 2
 
-# Simplificar tratamientos
-df["Condition_simple"] = (
-    df["Conditions"]
-    .astype(str)
-    .str.extract(r'(^\w+)')[0]
+# ============================================
+# CLASIFICAR TRATAMIENTOS
+# ============================================
+
+def clasificar_tratamiento(cond):
+
+    cond = str(cond).lower()
+
+    if "annealed" in cond:
+        return "Annealed"
+
+    elif "normalized" in cond:
+        return "Normalized"
+
+    elif "hot rolled" in cond:
+        return "Hot Rolled"
+
+    elif "cold drawn" in cond:
+        return "Cold Drawn"
+
+    elif "quenched" in cond:
+        return "Quenched"
+
+    elif "spheroidized" in cond:
+        return "Spheroidized"
+
+    elif "oi" in cond:
+        return "Other"
+
+    else:
+        return "Other"
+
+
+df["Condition_simple"] = df["Conditions"].apply(
+    clasificar_tratamiento
 )
 
 # Limpiar columna de dureza
